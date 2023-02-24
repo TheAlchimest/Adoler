@@ -1,0 +1,41 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace Adoler
+{
+
+
+    public class RecordSetDefinitionManager
+    {
+        public List<RecordSetDefinition> GenerateRecordSetDefinition(Type[] types, List<string> names)
+        {
+            List<RecordSetDefinition> recordSetDefinitions = new List<RecordSetDefinition>();
+            RecordSetDefinition item = null;
+            int index = 0;
+            foreach (var t in types)
+            {
+                item = new RecordSetDefinition();
+                item.Type = t;
+                item.IsGenericType = t.IsGenericType;
+                if (t.IsGenericType)
+                {
+                    item.GenericObjectType = t.GetGenericArguments()[0];
+                }
+                if (names == null)
+                {
+
+                    item.Name = (t.IsGenericType) ? item.GenericObjectType.Name : item.Type.Name;
+                }
+                else
+                {
+                    item.Name = names[index];
+                }
+                recordSetDefinitions.Add(item);
+                ++index;
+            }
+            return recordSetDefinitions;
+
+        }
+
+    }
+}
