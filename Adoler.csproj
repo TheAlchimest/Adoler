@@ -4,10 +4,45 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Authors>Ahmed Elsheikh</Authors>
+    <Description>Adoler is a SQL helper that helps to connect, execute SQL commands, call the SQL stored procedures, and retrieve
+Directly insert the selected data into your objects.
+
+You can pass your parameters using a direct DTO, or Data Model Dynamic Object, or pass your parameters directly.
+
+It is easy to use the output parameters, multiple record sets, and dynamic objects.</Description>
+    <Copyright></Copyright>
+    <RepositoryUrl>https://github.com/TheAlchimest/Adoler</RepositoryUrl>
+    <PackageTags>SQL, Queries, Commands, Data, Helper</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove=".editorconfig" />
+    <None Remove=".gitattributes" />
+    <None Remove=".gitignore" />
+    <None Remove="LICENSE" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EditorConfigFiles Remove="D:\Repos\Adoler\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EditorConfigFiles Remove="D:\Repos\Adoler\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
