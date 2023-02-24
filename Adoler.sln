@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33414.496
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adoler", "Adoler.csproj", "{FA6A0296-E3F8-497B-8DB2-79C9D9B39CDF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FA6A0296-E3F8-497B-8DB2-79C9D9B39CDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA6A0296-E3F8-497B-8DB2-79C9D9B39CDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA6A0296-E3F8-497B-8DB2-79C9D9B39CDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA6A0296-E3F8-497B-8DB2-79C9D9B39CDF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9488B0A1-0803-4871-BC27-DF5E1D94A4C4}
+	EndGlobalSection
+EndGlobal
