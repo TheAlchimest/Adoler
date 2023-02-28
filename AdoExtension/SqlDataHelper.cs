@@ -279,22 +279,20 @@ namespace Adoler
 
         #endregion
 
-        #region --------------ExecuteReaderForPagedList--------------
-
-        public List<T> ExecuteReaderForPagedList<T>(string procedureName, ExpandoObject data, int pageNumber, int rowsPerPage, out int totalRecords)
+        #region --------------RetrievePaggedEntityList--------------
+        public List<T> RetrievePaggedEntityList<T>(string procedureName, ExpandoObject data, int pageNo, int pageSize, out int count)
         {
             var parameters = SqlParameters.ConvertDynamicToParameters(data);
-            return RetrievePaggedEntityList<T>(procedureName, parameters, pageNumber, rowsPerPage, out totalRecords);
+            return RetrievePaggedEntityList<T>(procedureName, parameters, pageNo, pageSize, out count);
         }
 
-        public List<T> RetrievePaggedEntityList<T>(string procedureName, int pageNumber, int rowsPerPage, out int totalRecords)
+        public List<T> RetrievePaggedEntityList<T>(string procedureName, int pageNo, int pageSize, out int count)
         {
             List<SqlParameter> parameters = new List<SqlParameter>();
-            return RetrievePaggedEntityList<T>(procedureName, parameters, pageNumber, rowsPerPage, out totalRecords);
-
+            return RetrievePaggedEntityList<T>(procedureName, parameters, pageNo, pageSize, out count);
         }
 
-        public List<T> RetrievePaggedEntityList<T>(string procedureName, List<SqlParameter> plist, int pageNumber, int rowsPerPage, out int totalRecords)
+        public List<T> RetrievePaggedEntityList<T>(string procedureName, List<SqlParameter> plist, int pageNo, int pageSize, out int count)
         {
             List<T> itemsList = new List<T>();
             using (SqlConnection myConnection = GetSqlConnection())
@@ -311,9 +309,9 @@ namespace Adoler
                     }
                 }
                 //add pagging parameters 
-                myCommand.Parameters.Add("@PageNumber", SqlDbType.Int).Value = pageNumber;
-                myCommand.Parameters.Add("@RowsPerPage", SqlDbType.Int).Value = rowsPerPage;
-                myCommand.Parameters.Add("@TotalRecords", SqlDbType.Int).Direction = ParameterDirection.Output;
+                myCommand.Parameters.Add("@PageNo", SqlDbType.Int).Value = pageNo;
+                myCommand.Parameters.Add("@PageSize", SqlDbType.Int).Value = pageSize;
+                myCommand.Parameters.Add("@Count", SqlDbType.Int).Direction = ParameterDirection.Output;
                 // Execute the command
                 SqlDataReader dr;
                 myConnection.Open();
@@ -328,7 +326,7 @@ namespace Adoler
                 }
                 dr.Close();
                 myConnection.Close();
-                totalRecords = (int)myCommand.Parameters["@TotalRecords"].Value;
+                count = (int)myCommand.Parameters["@Count"].Value;
                 //----------------------------------------------------------------
                 return itemsList;
             }

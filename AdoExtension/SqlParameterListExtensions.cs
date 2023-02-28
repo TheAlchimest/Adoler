@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using Microsoft.Data.SqlClient;
 using System.Reflection;
+using System.Data.SqlTypes;
 
 namespace Adoler
 {
@@ -55,25 +56,41 @@ namespace Adoler
         {
             plist.Add(parameter);
         }
-        public static void AddOutputParameter(this List<SqlParameter> plist, string parameterName, SqlDbType sqltype)
+        public static SqlParameter AddOutputParameter(this List<SqlParameter> plist, string parameterName, SqlDbType sqltype)
         {
-            plist.Add(parameterName, sqltype, ParameterDirection.Output);
+            var p = new SqlParameter(parameterName, sqltype);
+            p.Direction = ParameterDirection.Output;
+            plist.Add(p);
+            return p;
         }
-        public static void AddOutputParameter(this List<SqlParameter> plist, string parameterName, object value)
+        public static SqlParameter AddOutputParameter(this List<SqlParameter> plist, string parameterName, object value)
         {
-            plist.Add(parameterName, value, ParameterDirection.Output);
+            var p = new SqlParameter(parameterName, value);
+            p.Direction = ParameterDirection.Output;
+            plist.Add(p);
+            return p;
         }
-        public static void AddOutputParameterInteger(this List<SqlParameter> plist, string parameterName)
+        public static SqlParameter AddOutputParameterInteger(this List<SqlParameter> plist, string parameterName)
         {
-            plist.AddOutputParameter(parameterName, SqlDbType.Int);
+            var p = new SqlParameter(parameterName, SqlDbType.Int);
+            p.Direction = ParameterDirection.Output;
+            plist.Add(p);
+            return p;
         }
-        public static void AddOutputParameterLong(this List<SqlParameter> plist, string parameterName)
+        public static SqlParameter AddOutputParameterLong(this List<SqlParameter> plist, string parameterName)
         {
-            plist.AddOutputParameter(parameterName, SqlDbType.BigInt);
+            var p = new SqlParameter(parameterName, SqlDbType.BigInt);
+            p.Direction = ParameterDirection.Output;
+            plist.Add(p);
+
+            return p;
         }
-        public static void AddOutputParameterBoolean(this List<SqlParameter> plist, string parameterName)
+        public static SqlParameter AddOutputParameterBoolean(this List<SqlParameter> plist, string parameterName)
         {
-            plist.AddOutputParameter(parameterName, SqlDbType.Bit);
+            var p = new SqlParameter(parameterName, SqlDbType.Bit);
+            p.Direction = ParameterDirection.Output;
+            plist.Add(p);
+            return p;
         }
         public static void GenerateParametersFromEntity(this List<SqlParameter> plist, object obj, string parametersNames)
         {
