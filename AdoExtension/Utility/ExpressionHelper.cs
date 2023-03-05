@@ -8,7 +8,7 @@ namespace Adoler
     /// <summary>
     /// this class hold some extensions that uses to get property names using linq expression
     /// </summary>
-    internal static class ExpressionHelper
+    public static class ExpressionHelper
     {
         private static readonly string expressionCannotBeNullMessage = "The expression cannot be null.";
         private static readonly string invalidExpressionMessage = "Invalid expression.";
@@ -19,7 +19,7 @@ namespace Adoler
         /// <typeparam name="T"></typeparam>
         /// <param name="expressions"></param>
         /// <returns></returns>
-        internal static List<PropertyInfo> GetProperiesFromExpression<T>(params Expression<Func<T, object>>[] expressions)
+        public static List<PropertyInfo> GetProperiesFromExpression<T>(params Expression<Func<T, object>>[] expressions)
         {
             PropertyInfo prop;
             List<PropertyInfo> plist = new List<PropertyInfo>();
@@ -47,7 +47,7 @@ namespace Adoler
         /// <param name="instance"></param>
         /// <param name="expression"></param>
         /// <returns></returns>
-        internal static string GetPropertyNameFromExpression<T>(this T instance, Expression<Func<T, object>> expression)
+        public static string GetPropertyNameFromExpression<T>(this T instance, Expression<Func<T, object>> expression)
         {
             return GetPropertyNameFromExpression(expression.Body);
         }
@@ -58,7 +58,7 @@ namespace Adoler
         /// <param name="instance"></param>
         /// <param name="expressions"></param>
         /// <returns></returns>
-        internal static List<string> GetPropertiesNamesFromExpression<T>(this T instance, params Expression<Func<T, object>>[] expressions)
+        public static List<string> GetPropertiesNamesFromExpression<T>(this T instance, params Expression<Func<T, object>>[] expressions)
         {
             List<string> memberNames = new List<string>();
             foreach (var cExpression in expressions)
@@ -75,7 +75,7 @@ namespace Adoler
         /// <param name="instance"></param>
         /// <param name="expression"></param>
         /// <returns></returns>
-        internal static string GetPropertyNameFromExpression<T>(this T instance, Expression<Action<T>> expression)
+        public static string GetPropertyNameFromExpression<T>(this T instance, Expression<Action<T>> expression)
         {
             return GetPropertyNameFromExpression(expression.Body);
         }
