@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Data.SqlClient;
-using System.Linq;
+﻿using Microsoft.Data.SqlClient;
 using System.Linq.Expressions;
 
 namespace Adoler
@@ -23,7 +20,7 @@ namespace Adoler
         {
             return SqlParameters.ConvertToParameters(instance);
         }
-  
+
         //---------------------------------------------------------------------
         #endregion
 
@@ -93,7 +90,8 @@ namespace Adoler
         {
             SqlParameters.UpdateWithOutputParameters(instance, plist);
         }
-        public static List<SqlParameter> ToSqlParamsList(this object obj, SqlParameter[] additionalParams = null, List<string> igoredParameters = null) {
+        public static List<SqlParameter> ToSqlParamsList(this object obj, SqlParameter[] additionalParams = null, List<string> igoredParameters = null)
+        {
             List<SqlParameter> additionalParamsList = (additionalParams != null) ? additionalParams.ToList() : null;
             return ToSqlParamsList(obj, additionalParamsList, igoredParameters);
         }

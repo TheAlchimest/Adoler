@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.Data.SqlClient;
 using System.Data;
-using Microsoft.Data.SqlClient;
 using System.Dynamic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -16,7 +13,7 @@ namespace Adoler
         {
             return ConvertToParameters<T>(instance, ParameterDirection.Input);
         }
-        
+
         public static List<SqlParameter> ConvertToParameters<T>(T instance, params Expression<Func<T, object>>[] expressions)
         {
             return ConvertToParameters<T>(instance, ParameterDirection.Input, expressions);
@@ -84,7 +81,7 @@ namespace Adoler
         }
         //---------------------------------------------------------------------
         #endregion
-       
+
         #region --------------ConvertToParameters--------------
         //---------------------------------------------------------------------
         //ConvertToParameters
@@ -97,7 +94,7 @@ namespace Adoler
         /// <param name="expressions"></param>
         /// <returns></returns>
         //---------------------------------------------------------------------
-       
+
         public static List<SqlParameter> ConvertToParameters<T>(T instance, ParameterDirection direction, params Expression<Func<T, object>>[] expressions)
         {
             List<SqlParameter> parameterlist = new List<SqlParameter>();
@@ -124,7 +121,7 @@ namespace Adoler
         /// <param name="expressions"></param>
         /// <returns></returns>
         //---------------------------------------------------------------------
-        
+
         public static List<SqlParameter> ConvertToParametersExcept<T>(T instance, ParameterDirection direction, params Expression<Func<T, object>>[] expressions)
         {
             List<SqlParameter> parameterlist = new List<SqlParameter>();
@@ -172,19 +169,19 @@ namespace Adoler
             Type t = instance.GetType();
             PropertyInfo[] properties = t.GetProperties();
             PropertyInfo prop;
-            foreach (var parameter in plist.Where(p=>p.Direction== ParameterDirection.Output|| p.Direction == ParameterDirection.InputOutput))
+            foreach (var parameter in plist.Where(p => p.Direction == ParameterDirection.Output || p.Direction == ParameterDirection.InputOutput))
             {
                 prop = t.GetProperty(parameter.ParameterName);
-                if(prop!=null&&prop.CanWrite)
+                if (prop != null && prop.CanWrite)
                 {
                     if (parameter.Value != DBNull.Value)
                     {
                         prop.SetValue(instance, parameter.Value);
                     }
-                   
+
                 }
             }
-           
+
         }
         #endregion
     }

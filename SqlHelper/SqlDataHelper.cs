@@ -1,12 +1,7 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
 using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Data;
-using Microsoft.Data.SqlClient;
 using System.Dynamic;
-using System.Reflection;
-using System.Linq;
 
 
 namespace Adoler

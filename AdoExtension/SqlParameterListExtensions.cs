@@ -1,14 +1,11 @@
-﻿using Adoler;
-using System;
-using System.Collections.Generic;
+﻿using Microsoft.Data.SqlClient;
 using System.Data;
-using Microsoft.Data.SqlClient;
 using System.Reflection;
-using System.Data.SqlTypes;
 
 namespace Adoler
 {
-    public static class SqlParameterListExtensions {
+    public static class SqlParameterListExtensions
+    {
 
         public static void Add(this List<SqlParameter> plist, PropertyInfo prop, object value, ParameterDirection direction = ParameterDirection.Input)
         {

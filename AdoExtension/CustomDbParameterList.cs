@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using Microsoft.Data.SqlClient;
-using System.Reflection;
+﻿using Microsoft.Data.SqlClient;
 
 namespace CITC.DatabaseUtilities.AdoExtension
 {
@@ -22,12 +18,12 @@ namespace CITC.DatabaseUtilities.AdoExtension
         public DbParameterList()
         {
             Parameters = new List<SqlParameter>();
-         OutputParameters = new List<SqlParameter>();
+            OutputParameters = new List<SqlParameter>();
 
         }
-    //---------------------------------------------
-    #endregion
+        //---------------------------------------------
+        #endregion
 
-       
+
     }
 }
