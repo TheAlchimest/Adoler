@@ -125,13 +125,13 @@ namespace Adoler
         public static List<SqlParameter> ConvertToParametersExcept<T>(T instance, ParameterDirection direction, params Expression<Func<T, object>>[] expressions)
         {
             List<SqlParameter> parameterlist = new List<SqlParameter>();
-            List<PropertyInfo> execludedpropList = ExpressionHelper.GetProperiesFromExpression(expressions);
-            List<string> execludedpropListNames = execludedpropList.Select(e => e.Name).ToList();
+            List<PropertyInfo> excludedpropList = ExpressionHelper.GetProperiesFromExpression(expressions);
+            List<string> excludedpropListNames = excludedpropList.Select(e => e.Name).ToList();
             Type t = instance.GetType();
             PropertyInfo[] propList = t.GetProperties();
             foreach (var prop in propList)
             {
-                if (expressions == null || !execludedpropListNames.Contains(prop.Name))
+                if (expressions == null || !excludedpropListNames.Contains(prop.Name))
                 {
                     parameterlist.Add(prop, prop.GetValue(instance), direction);
                 }
