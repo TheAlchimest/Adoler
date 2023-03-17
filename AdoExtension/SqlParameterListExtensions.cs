@@ -53,6 +53,13 @@ namespace Adoler
         {
             plist.Add(parameter);
         }
+        public static SqlParameter AddOutputTotalCountOutput(this List<SqlParameter> plist)
+        {
+            var p = new SqlParameter("Count" , SqlDbType.Int);
+            p.Direction = ParameterDirection.Output;
+            plist.Add(p);
+            return p;
+        }
         public static SqlParameter AddOutputParameter(this List<SqlParameter> plist, string parameterName, SqlDbType sqltype)
         {
             var p = new SqlParameter(parameterName, sqltype);
