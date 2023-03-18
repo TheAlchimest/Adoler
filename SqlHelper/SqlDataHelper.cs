@@ -275,19 +275,19 @@ namespace Adoler
         #endregion
 
         #region --------------RetrievePaggedEntityList--------------
-        public List<T> RetrievePaggedEntityList<T>(string procedureName, ExpandoObject data, int pageNo, int pageSize, out int count)
+        public List<T> RetrievePaggedEntityList<T>(string procedureName, ExpandoObject data, int pageNumber, int pageSize, out int count)
         {
             var parameters = SqlParameters.ConvertDynamicToParameters(data);
-            return RetrievePaggedEntityList<T>(procedureName, parameters, pageNo, pageSize, out count);
+            return RetrievePaggedEntityList<T>(procedureName, parameters, pageNumber, pageSize, out count);
         }
 
-        public List<T> RetrievePaggedEntityList<T>(string procedureName, int pageNo, int pageSize, out int count)
+        public List<T> RetrievePaggedEntityList<T>(string procedureName, int pageNumber, int pageSize, out int count)
         {
             List<SqlParameter> parameters = new List<SqlParameter>();
-            return RetrievePaggedEntityList<T>(procedureName, parameters, pageNo, pageSize, out count);
+            return RetrievePaggedEntityList<T>(procedureName, parameters, pageNumber, pageSize, out count);
         }
 
-        public List<T> RetrievePaggedEntityList<T>(string procedureName, List<SqlParameter> plist, int pageNo, int pageSize, out int count)
+        public List<T> RetrievePaggedEntityList<T>(string procedureName, List<SqlParameter> plist, int pageNumber, int pageSize, out int count)
         {
             List<T> itemsList = new List<T>();
             using (SqlConnection myConnection = GetSqlConnection())
@@ -304,7 +304,7 @@ namespace Adoler
                     }
                 }
                 //add pagging parameters 
-                myCommand.Parameters.Add("@PageNo", SqlDbType.Int).Value = pageNo;
+                myCommand.Parameters.Add("@PageNumber", SqlDbType.Int).Value = pageNumber;
                 myCommand.Parameters.Add("@PageSize", SqlDbType.Int).Value = pageSize;
                 myCommand.Parameters.Add("@Count", SqlDbType.Int).Direction = ParameterDirection.Output;
                 // Execute the command
@@ -347,31 +347,8 @@ namespace Adoler
 
         public T GetOne<T>(string procedureName, List<SqlParameter> plist)
         {
-            T item = default(T);
-            using (SqlConnection myConnection = GetSqlConnection())
-            {
-                SqlCommand myCommand = new SqlCommand(procedureName.Trim(), myConnection);
-                myCommand.CommandType = CommandType.StoredProcedure;
-                // Set the parameters
-                if (plist != null && plist.Count > 0)
-                {
-                    foreach (SqlParameter p in plist)
-                    {
-                        myCommand.Parameters.Add(p);
-                    }
-                }
-                // Execute the command
-                SqlDataReader dr;
-                myConnection.Open();
-                dr = myCommand.ExecuteReader();
-                if (dr.HasRows)
-                {
-                    item = DataReaderMapper.GetEntity<T>(dr);
-                }
-                dr.Close();
-                myConnection.Close();
-                return item;
-            }
+            var list = GetList<T>(procedureName, plist);
+            return list[0];
         }
 
         #endregion

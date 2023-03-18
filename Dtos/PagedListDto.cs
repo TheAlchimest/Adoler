@@ -7,7 +7,7 @@
 
         }
         public IEnumerable<T> Items { get; set; }
-        public PagedList(IEnumerable<T> source, int pageNo, int pageSize, int count)
+        public PagedList(IEnumerable<T> source, int pageNumber, int pageSize, int count)
         {
             Items = source;
         }
