@@ -42,7 +42,7 @@ namespace Microsoft.ApplicationBlocks.Data
         private SqlHelper() { }
 
         /// <summary>
-        /// This method is used to attach array of SqlParameters to a SqlCommand.
+        /// This method is used to attach array of SqlParametersHelper to a SqlCommand.
         /// 
         /// This method will assign a value of DbNull to any parameter with a direction of
         /// InputOutput and a value of null.  
@@ -52,7 +52,7 @@ namespace Microsoft.ApplicationBlocks.Data
         /// where the user provided no input value.
         /// </summary>
         /// <param name="command">The command to which the parameters will be added</param>
-        /// <param name="commandParameters">An array of SqlParameters to be added to command</param>
+        /// <param name="commandParameters">An array of SqlParametersHelper to be added to command</param>
         private static void AttachParameters(SqlCommand command, SqlParameter[] commandParameters)
         {
             if (command == null) throw new ArgumentNullException("command");
@@ -77,9 +77,9 @@ namespace Microsoft.ApplicationBlocks.Data
         }
 
         /// <summary>
-        /// This method assigns dataRow column values to an array of SqlParameters
+        /// This method assigns dataRow column values to an array of SqlParametersHelper
         /// </summary>
-        /// <param name="commandParameters">Array of SqlParameters to be assigned values</param>
+        /// <param name="commandParameters">Array of SqlParametersHelper to be assigned values</param>
         /// <param name="dataRow">The dataRow used to hold the stored procedure's parameter values</param>
         private static void AssignParameterValues(SqlParameter[] commandParameters, DataRow dataRow)
         {
@@ -107,9 +107,9 @@ namespace Microsoft.ApplicationBlocks.Data
         }
 
         /// <summary>
-        /// This method assigns an array of values to an array of SqlParameters
+        /// This method assigns an array of values to an array of SqlParametersHelper
         /// </summary>
-        /// <param name="commandParameters">Array of SqlParameters to be assigned values</param>
+        /// <param name="commandParameters">Array of SqlParametersHelper to be assigned values</param>
         /// <param name="parameterValues">Array of objects holding the values to be assigned</param>
         private static void AssignParameterValues(SqlParameter[] commandParameters, object[] parameterValues)
         {
@@ -125,7 +125,7 @@ namespace Microsoft.ApplicationBlocks.Data
                 throw new ArgumentException("Parameter count does not match Parameter Value count.");
             }
 
-            // Iterate through the SqlParameters, assigning the values from the corresponding position in the 
+            // Iterate through the SqlParametersHelper, assigning the values from the corresponding position in the 
             // value array
             for (int i = 0, j = commandParameters.Length; i < j; i++)
             {
@@ -162,7 +162,7 @@ namespace Microsoft.ApplicationBlocks.Data
         /// <param name="transaction">A valid SqlTransaction, or 'null'</param>
         /// <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
         /// <param name="commandText">The stored procedure name or T-SQL command</param>
-        /// <param name="commandParameters">An array of SqlParameters to be associated with the command or 'null' if no parameters are required</param>
+        /// <param name="commandParameters">An array of SqlParametersHelper to be associated with the command or 'null' if no parameters are required</param>
         /// <param name="mustCloseConnection"><c>true</c> if the connection was opened by the method, otherwose is false.</param>
         private static void PrepareCommand(SqlCommand command, SqlConnection connection, SqlTransaction transaction, CommandType commandType, string commandText, SqlParameter[] commandParameters, out bool mustCloseConnection)
         {
@@ -223,7 +223,7 @@ namespace Microsoft.ApplicationBlocks.Data
         /// <returns>An int representing the number of rows affected by the command</returns>
         public static int ExecuteNonQuery(string connectionString, CommandType commandType, string commandText)
         {
-            // Pass through the call providing null for the set of SqlParameters
+            // Pass through the call providing null for the set of SqlParametersHelper
             return ExecuteNonQuery(connectionString, commandType, commandText, (SqlParameter[])null);
         }
 
@@ -283,7 +283,7 @@ namespace Microsoft.ApplicationBlocks.Data
                 // Assign the provided values to these parameters based on parameter order
                 AssignParameterValues(commandParameters, parameterValues);
 
-                // Call the overload that takes an array of SqlParameters
+                // Call the overload that takes an array of SqlParametersHelper
                 return ExecuteNonQuery(connectionString, CommandType.StoredProcedure, spName, commandParameters);
             }
             else
@@ -306,7 +306,7 @@ namespace Microsoft.ApplicationBlocks.Data
         /// <returns>An int representing the number of rows affected by the command</returns>
         public static int ExecuteNonQuery(SqlConnection connection, CommandType commandType, string commandText)
         {
-            // Pass through the call providing null for the set of SqlParameters
+            // Pass through the call providing null for the set of SqlParametersHelper
             return ExecuteNonQuery(connection, commandType, commandText, (SqlParameter[])null);
         }
 
@@ -335,7 +335,7 @@ namespace Microsoft.ApplicationBlocks.Data
             // Finally, execute the command
             int retval = cmd.ExecuteNonQuery();
 
-            // Detach the SqlParameters from the command object, so they can be used again
+            // Detach the SqlParametersHelper from the command object, so they can be used again
             cmd.Parameters.Clear();
             if (mustCloseConnection)
                 connection.Close();
@@ -371,7 +371,7 @@ namespace Microsoft.ApplicationBlocks.Data
                 // Assign the provided values to these parameters based on parameter order
                 AssignParameterValues(commandParameters, parameterValues);
 
-                // Call the overload that takes an array of SqlParameters
+                // Call the overload that takes an array of SqlParametersHelper
                 return ExecuteNonQuery(connection, CommandType.StoredProcedure, spName, commandParameters);
             }
             else
@@ -394,7 +394,7 @@ namespace Microsoft.ApplicationBlocks.Data
         /// <returns>An int representing the number of rows affected by the command</returns>
         public static int ExecuteNonQuery(SqlTransaction transaction, CommandType commandType, string commandText)
         {
-            // Pass through the call providing null for the set of SqlParameters
+            // Pass through the call providing null for the set of SqlParametersHelper
             return ExecuteNonQuery(transaction, commandType, commandText, (SqlParameter[])null);
         }
 
@@ -424,7 +424,7 @@ namespace Microsoft.ApplicationBlocks.Data
             // Finally, execute the command
             int retval = cmd.ExecuteNonQuery();
 
-            // Detach the SqlParameters from the command object, so they can be used again
+            // Detach the SqlParametersHelper from the command object, so they can be used again
             cmd.Parameters.Clear();
             return retval;
         }
@@ -459,7 +459,7 @@ namespace Microsoft.ApplicationBlocks.Data
                 // Assign the provided values to these parameters based on parameter order
                 AssignParameterValues(commandParameters, parameterValues);
 
-                // Call the overload that takes an array of SqlParameters
+                // Call the overload that takes an array of SqlParametersHelper
                 return ExecuteNonQuery(transaction, CommandType.StoredProcedure, spName, commandParameters);
             }
             else
@@ -487,7 +487,7 @@ namespace Microsoft.ApplicationBlocks.Data
         /// <returns>A dataset containing the resultset generated by the command</returns>
         public static DataSet ExecuteDataset(string connectionString, CommandType commandType, string commandText)
         {
-            // Pass through the call providing null for the set of SqlParameters
+            // Pass through the call providing null for the set of SqlParametersHelper
             return ExecuteDataset(connectionString, commandType, commandText, (SqlParameter[])null);
         }
 
@@ -561,7 +561,7 @@ namespace Microsoft.ApplicationBlocks.Data
                 // Assign the provided values to these parameters based on parameter order
                 AssignParameterValues(commandParameters, parameterValues);
 
-                // Call the overload that takes an array of SqlParameters
+                // Call the overload that takes an array of SqlParametersHelper
                 return ExecuteDataset(connectionString, CommandType.StoredProcedure, spName, commandParameters);
             }
             else
@@ -584,7 +584,7 @@ namespace Microsoft.ApplicationBlocks.Data
         /// <returns>A dataset containing the resultset generated by the command</returns>
         public static DataSet ExecuteDataset(SqlConnection connection, CommandType commandType, string commandText)
         {
-            // Pass through the call providing null for the set of SqlParameters
+            // Pass through the call providing null for the set of SqlParametersHelper
             return ExecuteDataset(connection, commandType, commandText, (SqlParameter[])null);
         }
 
@@ -618,7 +618,7 @@ namespace Microsoft.ApplicationBlocks.Data
                 // Fill the DataSet using default values for DataTable names, etc
                 da.Fill(ds);
 
-                // Detach the SqlParameters from the command object, so they can be used again
+                // Detach the SqlParametersHelper from the command object, so they can be used again
                 cmd.Parameters.Clear();
 
                 if (mustCloseConnection)
@@ -648,7 +648,7 @@ namespace Microsoft.ApplicationBlocks.Data
 
                 RecordCount = Convert.ToInt32(cmd.Parameters["@RecordCount"].Value);
 
-                // Detach the SqlParameters from the command object, so they can be used again
+                // Detach the SqlParametersHelper from the command object, so they can be used again
                 cmd.Parameters.Clear();
 
                 if (mustCloseConnection)
@@ -687,7 +687,7 @@ namespace Microsoft.ApplicationBlocks.Data
                 // Assign the provided values to these parameters based on parameter order
                 AssignParameterValues(commandParameters, parameterValues);
 
-                // Call the overload that takes an array of SqlParameters
+                // Call the overload that takes an array of SqlParametersHelper
                 return ExecuteDataset(connection, CommandType.StoredProcedure, spName, commandParameters);
             }
             else
@@ -710,7 +710,7 @@ namespace Microsoft.ApplicationBlocks.Data
         /// <returns>A dataset containing the resultset generated by the command</returns>
         public static DataSet ExecuteDataset(SqlTransaction transaction, CommandType commandType, string commandText)
         {
-            // Pass through the call providing null for the set of SqlParameters
+            // Pass through the call providing null for the set of SqlParametersHelper
             return ExecuteDataset(transaction, commandType, commandText, (SqlParameter[])null);
         }
 
@@ -745,7 +745,7 @@ namespace Microsoft.ApplicationBlocks.Data
                 // Fill the DataSet using default values for DataTable names, etc
                 da.Fill(ds);
 
-                // Detach the SqlParameters from the command object, so they can be used again
+                // Detach the SqlParametersHelper from the command object, so they can be used again
                 cmd.Parameters.Clear();
 
                 // Return the dataset
@@ -783,7 +783,7 @@ namespace Microsoft.ApplicationBlocks.Data
                 // Assign the provided values to these parameters based on parameter order
                 AssignParameterValues(commandParameters, parameterValues);
 
-                // Call the overload that takes an array of SqlParameters
+                // Call the overload that takes an array of SqlParametersHelper
                 return ExecuteDataset(transaction, CommandType.StoredProcedure, spName, commandParameters);
             }
             else
@@ -821,7 +821,7 @@ namespace Microsoft.ApplicationBlocks.Data
         /// <param name="transaction">A valid SqlTransaction, or 'null'</param>
         /// <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
         /// <param name="commandText">The stored procedure name or T-SQL command</param>
-        /// <param name="commandParameters">An array of SqlParameters to be associated with the command or 'null' if no parameters are required</param>
+        /// <param name="commandParameters">An array of SqlParametersHelper to be associated with the command or 'null' if no parameters are required</param>
         /// <param name="connectionOwnership">Indicates whether the connection parameter was provided by the caller, or created by SqlHelper</param>
         /// <returns>SqlDataReader containing the results of the command</returns>
         private static SqlDataReader ExecuteReader(SqlConnection connection, SqlTransaction transaction, CommandType commandType, string commandText, SqlParameter[] commandParameters, SqlConnectionOwnership connectionOwnership)
@@ -848,7 +848,7 @@ namespace Microsoft.ApplicationBlocks.Data
                     dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 }
 
-                // Detach the SqlParameters from the command object, so they can be used again.
+                // Detach the SqlParametersHelper from the command object, so they can be used again.
                 // HACK: There is a problem here, the output parameter values are fletched 
                 // when the reader is closed, so if the parameters are detached from the command
                 // then the SqlReader can´t set its values. 
@@ -889,7 +889,7 @@ namespace Microsoft.ApplicationBlocks.Data
         /// <returns>A SqlDataReader containing the resultset generated by the command</returns>
         public static SqlDataReader ExecuteReader(string connectionString, CommandType commandType, string commandText)
         {
-            // Pass through the call providing null for the set of SqlParameters
+            // Pass through the call providing null for the set of SqlParametersHelper
             return ExecuteReader(connectionString, commandType, commandText, (SqlParameter[])null);
         }
 
@@ -976,7 +976,7 @@ namespace Microsoft.ApplicationBlocks.Data
         /// <returns>A SqlDataReader containing the resultset generated by the command</returns>
         public static SqlDataReader ExecuteReader(SqlConnection connection, CommandType commandType, string commandText)
         {
-            // Pass through the call providing null for the set of SqlParameters
+            // Pass through the call providing null for the set of SqlParametersHelper
             return ExecuteReader(connection, commandType, commandText, (SqlParameter[])null);
         }
 
@@ -1048,7 +1048,7 @@ namespace Microsoft.ApplicationBlocks.Data
         /// <returns>A SqlDataReader containing the resultset generated by the command</returns>
         public static SqlDataReader ExecuteReader(SqlTransaction transaction, CommandType commandType, string commandText)
         {
-            // Pass through the call providing null for the set of SqlParameters
+            // Pass through the call providing null for the set of SqlParametersHelper
             return ExecuteReader(transaction, commandType, commandText, (SqlParameter[])null);
         }
 
@@ -1129,7 +1129,7 @@ namespace Microsoft.ApplicationBlocks.Data
         /// <returns>An object containing the value in the 1x1 resultset generated by the command</returns>
         public static object ExecuteScalar(string connectionString, CommandType commandType, string commandText)
         {
-            // Pass through the call providing null for the set of SqlParameters
+            // Pass through the call providing null for the set of SqlParametersHelper
             return ExecuteScalar(connectionString, commandType, commandText, (SqlParameter[])null);
         }
 
@@ -1188,7 +1188,7 @@ namespace Microsoft.ApplicationBlocks.Data
                 // Assign the provided values to these parameters based on parameter order
                 AssignParameterValues(commandParameters, parameterValues);
 
-                // Call the overload that takes an array of SqlParameters
+                // Call the overload that takes an array of SqlParametersHelper
                 return ExecuteScalar(connectionString, CommandType.StoredProcedure, spName, commandParameters);
             }
             else
@@ -1211,7 +1211,7 @@ namespace Microsoft.ApplicationBlocks.Data
         /// <returns>An object containing the value in the 1x1 resultset generated by the command</returns>
         public static object ExecuteScalar(SqlConnection connection, CommandType commandType, string commandText)
         {
-            // Pass through the call providing null for the set of SqlParameters
+            // Pass through the call providing null for the set of SqlParametersHelper
             return ExecuteScalar(connection, commandType, commandText, (SqlParameter[])null);
         }
 
@@ -1241,7 +1241,7 @@ namespace Microsoft.ApplicationBlocks.Data
             // Execute the command & return the results
             object retval = cmd.ExecuteScalar();
 
-            // Detach the SqlParameters from the command object, so they can be used again
+            // Detach the SqlParametersHelper from the command object, so they can be used again
             cmd.Parameters.Clear();
 
             if (mustCloseConnection)
@@ -1279,7 +1279,7 @@ namespace Microsoft.ApplicationBlocks.Data
                 // Assign the provided values to these parameters based on parameter order
                 AssignParameterValues(commandParameters, parameterValues);
 
-                // Call the overload that takes an array of SqlParameters
+                // Call the overload that takes an array of SqlParametersHelper
                 return ExecuteScalar(connection, CommandType.StoredProcedure, spName, commandParameters);
             }
             else
@@ -1302,7 +1302,7 @@ namespace Microsoft.ApplicationBlocks.Data
         /// <returns>An object containing the value in the 1x1 resultset generated by the command</returns>
         public static object ExecuteScalar(SqlTransaction transaction, CommandType commandType, string commandText)
         {
-            // Pass through the call providing null for the set of SqlParameters
+            // Pass through the call providing null for the set of SqlParametersHelper
             return ExecuteScalar(transaction, commandType, commandText, (SqlParameter[])null);
         }
 
@@ -1332,7 +1332,7 @@ namespace Microsoft.ApplicationBlocks.Data
             // Execute the command & return the results
             object retval = cmd.ExecuteScalar();
 
-            // Detach the SqlParameters from the command object, so they can be used again
+            // Detach the SqlParametersHelper from the command object, so they can be used again
             cmd.Parameters.Clear();
             return retval;
         }
@@ -1367,7 +1367,7 @@ namespace Microsoft.ApplicationBlocks.Data
                 // Assign the provided values to these parameters based on parameter order
                 AssignParameterValues(commandParameters, parameterValues);
 
-                // Call the overload that takes an array of SqlParameters
+                // Call the overload that takes an array of SqlParametersHelper
                 return ExecuteScalar(transaction, CommandType.StoredProcedure, spName, commandParameters);
             }
             else
@@ -1393,7 +1393,7 @@ namespace Microsoft.ApplicationBlocks.Data
         /// <returns>An XmlReader containing the resultset generated by the command</returns>
         public static XmlReader ExecuteXmlReader(SqlConnection connection, CommandType commandType, string commandText)
         {
-            // Pass through the call providing null for the set of SqlParameters
+            // Pass through the call providing null for the set of SqlParametersHelper
             return ExecuteXmlReader(connection, commandType, commandText, (SqlParameter[])null);
         }
 
@@ -1424,7 +1424,7 @@ namespace Microsoft.ApplicationBlocks.Data
                 // Create the DataAdapter & DataSet
                 XmlReader retval = cmd.ExecuteXmlReader();
 
-                // Detach the SqlParameters from the command object, so they can be used again
+                // Detach the SqlParametersHelper from the command object, so they can be used again
                 cmd.Parameters.Clear();
 
                 return retval;
@@ -1466,7 +1466,7 @@ namespace Microsoft.ApplicationBlocks.Data
                 // Assign the provided values to these parameters based on parameter order
                 AssignParameterValues(commandParameters, parameterValues);
 
-                // Call the overload that takes an array of SqlParameters
+                // Call the overload that takes an array of SqlParametersHelper
                 return ExecuteXmlReader(connection, CommandType.StoredProcedure, spName, commandParameters);
             }
             else
@@ -1489,7 +1489,7 @@ namespace Microsoft.ApplicationBlocks.Data
         /// <returns>An XmlReader containing the resultset generated by the command</returns>
         public static XmlReader ExecuteXmlReader(SqlTransaction transaction, CommandType commandType, string commandText)
         {
-            // Pass through the call providing null for the set of SqlParameters
+            // Pass through the call providing null for the set of SqlParametersHelper
             return ExecuteXmlReader(transaction, commandType, commandText, (SqlParameter[])null);
         }
 
@@ -1519,7 +1519,7 @@ namespace Microsoft.ApplicationBlocks.Data
             // Create the DataAdapter & DataSet
             XmlReader retval = cmd.ExecuteXmlReader();
 
-            // Detach the SqlParameters from the command object, so they can be used again
+            // Detach the SqlParametersHelper from the command object, so they can be used again
             cmd.Parameters.Clear();
             return retval;
         }
@@ -1554,7 +1554,7 @@ namespace Microsoft.ApplicationBlocks.Data
                 // Assign the provided values to these parameters based on parameter order
                 AssignParameterValues(commandParameters, parameterValues);
 
-                // Call the overload that takes an array of SqlParameters
+                // Call the overload that takes an array of SqlParametersHelper
                 return ExecuteXmlReader(transaction, CommandType.StoredProcedure, spName, commandParameters);
             }
             else
@@ -1740,7 +1740,7 @@ namespace Microsoft.ApplicationBlocks.Data
                 // Assign the provided values to these parameters based on parameter order
                 AssignParameterValues(commandParameters, parameterValues);
 
-                // Call the overload that takes an array of SqlParameters
+                // Call the overload that takes an array of SqlParametersHelper
                 FillDataset(connection, CommandType.StoredProcedure, spName, dataSet, tableNames, commandParameters);
             }
             else
@@ -1830,7 +1830,7 @@ namespace Microsoft.ApplicationBlocks.Data
                 // Assign the provided values to these parameters based on parameter order
                 AssignParameterValues(commandParameters, parameterValues);
 
-                // Call the overload that takes an array of SqlParameters
+                // Call the overload that takes an array of SqlParametersHelper
                 FillDataset(transaction, CommandType.StoredProcedure, spName, dataSet, tableNames, commandParameters);
             }
             else
@@ -1890,7 +1890,7 @@ namespace Microsoft.ApplicationBlocks.Data
                 // Fill the DataSet using default values for DataTable names, etc
                 dataAdapter.Fill(dataSet);
 
-                // Detach the SqlParameters from the command object, so they can be used again
+                // Detach the SqlParametersHelper from the command object, so they can be used again
                 command.Parameters.Clear();
             }
 
@@ -2517,7 +2517,7 @@ namespace Microsoft.ApplicationBlocks.Data
         private static Hashtable paramCache = Hashtable.Synchronized(new Hashtable());
 
         /// <summary>
-        /// Resolve at run time the appropriate set of SqlParameters for a stored procedure
+        /// Resolve at run time the appropriate set of SqlParametersHelper for a stored procedure
         /// </summary>
         /// <param name="connection">A valid SqlConnection object</param>
         /// <param name="spName">The name of the stored procedure</param>
@@ -2618,21 +2618,21 @@ namespace Microsoft.ApplicationBlocks.Data
         #region Parameter Discovery Functions
 
         /// <summary>
-        /// Retrieves the set of SqlParameters appropriate for the stored procedure
+        /// Retrieves the set of SqlParametersHelper appropriate for the stored procedure
         /// </summary>
         /// <remarks>
         /// This method will query the database for this information, and then store it in a cache for future requests.
         /// </remarks>
         /// <param name="connectionString">A valid connection string for a SqlConnection</param>
         /// <param name="spName">The name of the stored procedure</param>
-        /// <returns>An array of SqlParameters</returns>
+        /// <returns>An array of SqlParametersHelper</returns>
         public static SqlParameter[] GetSpParameterSet(string connectionString, string spName)
         {
             return GetSpParameterSet(connectionString, spName, false);
         }
 
         /// <summary>
-        /// Retrieves the set of SqlParameters appropriate for the stored procedure
+        /// Retrieves the set of SqlParametersHelper appropriate for the stored procedure
         /// </summary>
         /// <remarks>
         /// This method will query the database for this information, and then store it in a cache for future requests.
@@ -2640,7 +2640,7 @@ namespace Microsoft.ApplicationBlocks.Data
         /// <param name="connectionString">A valid connection string for a SqlConnection</param>
         /// <param name="spName">The name of the stored procedure</param>
         /// <param name="includeReturnValueParameter">A bool value indicating whether the return value parameter should be included in the results</param>
-        /// <returns>An array of SqlParameters</returns>
+        /// <returns>An array of SqlParametersHelper</returns>
         public static SqlParameter[] GetSpParameterSet(string connectionString, string spName, bool includeReturnValueParameter)
         {
             if (connectionString == null || connectionString.Length == 0) throw new ArgumentNullException("connectionString");
@@ -2653,21 +2653,21 @@ namespace Microsoft.ApplicationBlocks.Data
         }
 
         /// <summary>
-        /// Retrieves the set of SqlParameters appropriate for the stored procedure
+        /// Retrieves the set of SqlParametersHelper appropriate for the stored procedure
         /// </summary>
         /// <remarks>
         /// This method will query the database for this information, and then store it in a cache for future requests.
         /// </remarks>
         /// <param name="connection">A valid SqlConnection object</param>
         /// <param name="spName">The name of the stored procedure</param>
-        /// <returns>An array of SqlParameters</returns>
+        /// <returns>An array of SqlParametersHelper</returns>
         internal static SqlParameter[] GetSpParameterSet(SqlConnection connection, string spName)
         {
             return GetSpParameterSet(connection, spName, false);
         }
 
         /// <summary>
-        /// Retrieves the set of SqlParameters appropriate for the stored procedure
+        /// Retrieves the set of SqlParametersHelper appropriate for the stored procedure
         /// </summary>
         /// <remarks>
         /// This method will query the database for this information, and then store it in a cache for future requests.
@@ -2675,7 +2675,7 @@ namespace Microsoft.ApplicationBlocks.Data
         /// <param name="connection">A valid SqlConnection object</param>
         /// <param name="spName">The name of the stored procedure</param>
         /// <param name="includeReturnValueParameter">A bool value indicating whether the return value parameter should be included in the results</param>
-        /// <returns>An array of SqlParameters</returns>
+        /// <returns>An array of SqlParametersHelper</returns>
         internal static SqlParameter[] GetSpParameterSet(SqlConnection connection, string spName, bool includeReturnValueParameter)
         {
             if (connection == null) throw new ArgumentNullException("connection");
@@ -2686,12 +2686,12 @@ namespace Microsoft.ApplicationBlocks.Data
         }
 
         /// <summary>
-        /// Retrieves the set of SqlParameters appropriate for the stored procedure
+        /// Retrieves the set of SqlParametersHelper appropriate for the stored procedure
         /// </summary>
         /// <param name="connection">A valid SqlConnection object</param>
         /// <param name="spName">The name of the stored procedure</param>
         /// <param name="includeReturnValueParameter">A bool value indicating whether the return value parameter should be included in the results</param>
-        /// <returns>An array of SqlParameters</returns>
+        /// <returns>An array of SqlParametersHelper</returns>
         private static SqlParameter[] GetSpParameterSetInternal(SqlConnection connection, string spName, bool includeReturnValueParameter)
         {
             if (connection == null) throw new ArgumentNullException("connection");

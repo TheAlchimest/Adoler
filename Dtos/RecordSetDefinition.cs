@@ -1,4 +1,4 @@
-﻿namespace Adoler
+﻿namespace Adoler.Dtos
 {
     public class RecordSetDefinition
     {

@@ -2,17 +2,25 @@
 using System.Data;
 using System.Reflection;
 
-namespace Adoler
+namespace Adoler.AdoExtension.Extensions
 {
     public static class SqlParameterListExtensions
     {
-
+        public static SqlParameter Get(this List<SqlParameter> parameterList, string parameterName)
+        {
+            return parameterList.FirstOrDefault(e => e.ParameterName.Equals(parameterName, StringComparison.OrdinalIgnoreCase));
+        }
+        public static object GetParameterValue(this List<SqlParameter> parameterList, string parameterName)
+        {
+            var p = parameterList.Get(parameterName);
+            return p?.Value;
+        }
         public static void Add(this List<SqlParameter> plist, PropertyInfo prop, object value, ParameterDirection direction = ParameterDirection.Input)
         {
             var p = new SqlParameter(prop.Name, value);
             if (value != null)
             {
-                Type typeOfParameter = prop.GetType();
+                var typeOfParameter = prop.GetType();
                 if (typeOfParameter == typeof(string))
                 {
                     p.Size = ((string)value).Length;
@@ -27,7 +35,7 @@ namespace Adoler
             var p = new SqlParameter(parameterName, value);
             if (value != null)
             {
-                Type typeOfParameter = value.GetType();
+                var typeOfParameter = value.GetType();
                 if (typeOfParameter == typeof(string))
                 {
                     p.Size = ((string)value).Length;
@@ -55,7 +63,7 @@ namespace Adoler
         }
         public static SqlParameter AddOutputTotalCountOutput(this List<SqlParameter> plist)
         {
-            var p = new SqlParameter("Count" , SqlDbType.Int);
+            var p = new SqlParameter("Count", SqlDbType.Int);
             p.Direction = ParameterDirection.Output;
             plist.Add(p);
             return p;
@@ -98,7 +106,7 @@ namespace Adoler
         }
         public static void GenerateParametersFromEntity(this List<SqlParameter> plist, object obj, string parametersNames)
         {
-            Type t = obj.GetType();
+            var t = obj.GetType();
             string[] parametersNamesArray = parametersNames.Split(',');
 
             PropertyInfo myPropInfo;
