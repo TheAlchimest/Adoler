@@ -4,7 +4,6 @@ using System.Data;
 using System.Dynamic;
 using System.Linq.Expressions;
 using System.Reflection;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Adoler.AdoExtension.Helpers
 {

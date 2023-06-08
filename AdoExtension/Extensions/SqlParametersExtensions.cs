@@ -3,7 +3,6 @@ using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Dynamic;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace Adoler.AdoExtension.Extensions
 {
