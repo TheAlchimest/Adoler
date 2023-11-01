@@ -1,5 +1,6 @@
 ﻿using Adoler.AdoExtension.Extensions;
 using Microsoft.Data.SqlClient;
+using System.Collections.Generic;
 using System.Data;
 using System.Dynamic;
 using System.Linq.Expressions;
@@ -27,9 +28,7 @@ namespace Adoler.AdoExtension.Helpers
             var plist = new List<SqlParameter>();
             foreach (var prop in properties)
             {
-                string name = prop.Name;
-                object value = prop.GetValue(instance);
-                plist.Add(name, value, direction);
+                AddParameter(instance, prop, plist, direction);
             }
             return plist;
         }
@@ -40,7 +39,7 @@ namespace Adoler.AdoExtension.Helpers
             var propList = ExpressionHelper.GetProperiesFromExpression(expressions);
             foreach (var prop in propList)
             {
-                parameterlist.Add(prop, prop.GetValue(instance), direction);
+                AddParameter(instance, prop, parameterlist, direction);
             }
             return parameterlist;
         }
@@ -52,9 +51,35 @@ namespace Adoler.AdoExtension.Helpers
             var properties = GetPropertyCache(instance);
             foreach (var prop in properties.Where(p => !excludedpropListNames.Contains(p.Name)))
             {
-                parameterlist.Add(prop, prop.GetValue(instance), direction);
+                AddParameter(instance, prop, parameterlist, direction);
             }
             return parameterlist;
+        }
+        private static void AddParameter<T>(T instance, PropertyInfo prop, List<SqlParameter> parameterlist, ParameterDirection direction = ParameterDirection.Input) {
+            object value = prop.GetValue(instance);
+
+            if (prop.PropertyType.IsEnum)
+            {
+                if (value != null)
+                {
+                    value = (int)value;
+                }
+                else {
+                    value = DBNull.Value;
+                }
+
+                parameterlist.Add(prop, (int)prop.GetValue(instance), direction);
+            }
+            else if (prop.PropertyType.IsValueType ||
+                prop.PropertyType == typeof(string) ||
+                Nullable.GetUnderlyingType(prop.PropertyType) != null
+
+                )
+            {
+                value = value ?? DBNull.Value;
+
+                parameterlist.Add(prop, value, direction);
+            }
         }
         public static List<SqlParameter> ConvertDynamicToParameters(ExpandoObject instance, ParameterDirection direction = ParameterDirection.Input)
         {
@@ -84,13 +109,15 @@ namespace Adoler.AdoExtension.Helpers
             var ignoredParametersList = string.IsNullOrEmpty(ignoredParameters) ? null : new HashSet<string>(ignoredParameters.Split(','), StringComparer.OrdinalIgnoreCase);
             var parameters = new List<SqlParameter>(properties.Length);
 
-            foreach (var property in properties)
+            foreach (var prop in properties)
             {
-                if (ignoredParametersList != null && ignoredParametersList.Contains(property.Name))
+                if (ignoredParametersList != null && ignoredParametersList.Contains(prop.Name))
                     continue;
+                if (prop.PropertyType.IsClass && prop.PropertyType != typeof(string))
+                    continue;
+                
 
-                var value = property.GetValue(instance) ?? DBNull.Value;
-                parameters.Add(new SqlParameter(property.Name, value));
+                AddParameter(instance, prop, parameters);
             }
 
             if (additionalParams != null && additionalParams.Count > 0)
