@@ -60,7 +60,7 @@ namespace Adoler
                     myPropInfo = t.GetProperty(columnname);
                     value = reader[columnname];
 
-                    if (value != DBNull.Value && myPropInfo != null)
+                    if (value != DBNull.Value && myPropInfo != null && (!myPropInfo.PropertyType.IsClass  || myPropInfo.PropertyType == typeof(string)))
                     {
                         //myPropInfo.SetValue(obj, Convert.ChangeType(value, myPropInfo.PropertyType), null);
                         //if (myPropInfo.PropertyType.BaseType == typeof(System.Enum))
