@@ -41,6 +41,10 @@ namespace Adoler.AdoExtension.Helpers
 
         public async Task<int> ExecuteNonQueryAsync(string procedureName, List<SqlParameter> plist)
         {
+            try
+            {
+
+            
             int resultCount = 0;
             using (var myConnection = GetSqlConnection())
             {
@@ -60,6 +64,12 @@ namespace Adoler.AdoExtension.Helpers
                 myConnection.Close();
             }
             return resultCount;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
 
 
